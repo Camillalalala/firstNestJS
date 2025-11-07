@@ -1,5 +1,5 @@
 // users/src/users.controller.ts
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import type { createUser } from '../entity/app.entity';
 
@@ -24,5 +24,18 @@ export class UsersController {
   @Post()
   create(@Body() createUser: createUser) {
     return this.usersService.create(createUser);
+  }
+
+  @Post(':userId/join-club')
+  async joinClub(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() body: { clubName: string },
+  ) {
+    return await this.usersService.joinClub(userId, body.clubName);
+  }
+
+  @Get(':userId/clubs')
+  async getUserClubs(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.usersService.getUserClubs(userId);
   }
 }
