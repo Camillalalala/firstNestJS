@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Club, createClub } from '../entity/app.entity';
 
 @Injectable()
-export class AppService {
+export class ClubsService {
   //Using in-memory array to simulate database but irl, actual DB is used and async would be necessary
   private clubs: Club[] = [
     { id: 1, name: 'ACM' },

@@ -1,4 +1,4 @@
-import { AppService } from './app.service';
+import { AppService } from './clubs.service';
 
 async function test() {
   const service = new AppService();
