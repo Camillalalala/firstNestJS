@@ -1,21 +1,26 @@
 // clubs/src/clubs.controller.ts
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { AppService } from './app.service';
+import type { createClub } from '../entity/app.entity';
 
 @Controller('clubs')
 export class ClubsController {
+  constructor(private readonly appService: AppService) {}
+
+  //correct controller methods
   @Get()
-  getClubs() {
-    return [
-      { id: 1, name: 'UCLA SWE' },
-      { id: 2, name: 'ACM' },
-    ];
+  async getClubs() {
+    const clubs = await this.appService.getClubs();
+    return clubs;
   }
-  @Get('finding')
-  findClubs() {
-    return 'Finding clubs...';
+  //@Param() and @Body() need runtime values, not just TypeScript types
+  @Get(':name')
+  findOne(@Param('name') name: string) {
+    return this.appService.findOne(name);
   }
+
   @Post()
-  createClub() {
-    return 'Club created successfully';
+  create(@Body() createClub: createClub) {
+    return this.appService.create(createClub);
   }
 }
