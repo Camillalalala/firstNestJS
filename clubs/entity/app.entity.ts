@@ -1,7 +1,7 @@
 // clubs/src/entity/app.entity.ts
 
 export interface Club {
-  id: string;
+  id: number;
   name: string;
 }
 

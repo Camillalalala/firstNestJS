@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Club, createClub } from '../entity/app.entity';
-import { randomUUID } from 'crypto';
 
 @Injectable()
 export class AppService {
   //Mock Data
   private clubs: Club[] = [
-    { id: randomUUID(), name: 'ACM' },
-    { id: randomUUID(), name: 'UCLA SWE' },
+    { id: 1, name: 'ACM' },
+    { id: 2, name: 'UCLA SWE' },
   ];
   async getClubs(): Promise<Club[]> {
     return await Promise.resolve(this.clubs);
@@ -18,7 +17,7 @@ export class AppService {
   }
 
   async create(createClub: createClub): Promise<Club> {
-    const newClub = { ...createClub, id: randomUUID() };
+    const newClub = { ...createClub, id: this.clubs.length + 1 };
     this.clubs.push(newClub);
     return await Promise.resolve(newClub);
   }
