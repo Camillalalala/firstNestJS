@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Club, createClub } from '../entity/app.entity';
 
 @Injectable()
 export class AppService {
-  //Mock Data
+  //Using in-memory array to simulate database but irl, actual DB is used and async would be necessary
   private clubs: Club[] = [
     { id: 1, name: 'ACM' },
     { id: 2, name: 'UCLA SWE' },
@@ -12,8 +12,12 @@ export class AppService {
     return await Promise.resolve(this.clubs);
   }
 
-  async findOne(name: string): Promise<Club | undefined> {
-    return await Promise.resolve(this.clubs.find((club) => club.name === name));
+  async findOne(name: string): Promise<Club> {
+    const club = this.clubs.find((c) => c.name === name);
+    if (!club) {
+      throw new NotFoundException(`Club with name "${name}" does not exist`);
+    }
+    return await Promise.resolve(club);
   }
 
   async create(createClub: createClub): Promise<Club> {

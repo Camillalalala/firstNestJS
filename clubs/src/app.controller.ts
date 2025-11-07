@@ -5,6 +5,7 @@ import type { createClub } from '../entity/app.entity';
 
 @Controller('clubs')
 export class ClubsController {
+  //Dependency Injection: automatically creates instance of AppService and injects it into app
   constructor(private readonly appService: AppService) {}
 
   //correct controller methods
@@ -15,8 +16,9 @@ export class ClubsController {
   }
   //@Param() and @Body() need runtime values, not just TypeScript types
   @Get(':name')
-  findOne(@Param('name') name: string) {
-    return this.appService.findOne(name);
+  async findOne(@Param('name') name: string) {
+    const single = await this.appService.findOne(name);
+    return single;
   }
 
   @Post()
