@@ -1,16 +1,7 @@
 // gateway/src/app.service.ts
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-
-interface User {
-  id: number;
-  name: string;
-}
-
-interface Club {
-  id: number;
-  name: string;
-}
+import { User, Club } from './types';
 
 @Injectable()
 export class AppService {
