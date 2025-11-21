@@ -59,4 +59,12 @@ export class ClubsController {
   ): Promise<{ id: number; clubId: number; title: string }> {
     return this.clubsService.createEventForClub(clubId, { title: body.title });
   }
+
+  @Get('roles/:clubId/:userId')
+  getUserRole(
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ): { clubId: number; userId: number; role: string } {
+    return this.clubsService.getUserRole(clubId, userId);
+  }
 }

@@ -16,6 +16,12 @@ interface CreatedUser {
   name: string;
 }
 
+interface UserRoleResult {
+  clubId: number;
+  userId: number;
+  role: string;
+}
+
 @Injectable()
 export class AppService {
   getHello(): string {
@@ -23,6 +29,7 @@ export class AppService {
   }
 
   private readonly usersServiceBase = 'http://localhost:3005';
+  private readonly clubsServiceBase = 'http://localhost:3001';
 
   async register(payload: RegisterPayload): Promise<{ user: CreatedUser }> {
     if (!payload.name || payload.name.trim().length === 0) {
@@ -40,6 +47,26 @@ export class AppService {
         throw new BadRequestException('User already exists');
       }
       throw new ServiceUnavailableException('Failed to create user profile');
+    }
+  }
+
+  async checkPermissions(
+    userId: number,
+    clubId: number,
+  ): Promise<UserRoleResult> {
+    if (!Number.isFinite(userId) || !Number.isFinite(clubId)) {
+      throw new BadRequestException('Invalid userId or clubId');
+    }
+    try {
+      const resp = await axios.get<UserRoleResult>(
+        `${this.clubsServiceBase}/clubs/roles/${clubId}/${userId}`,
+      );
+      return resp.data;
+    } catch (err: any) {
+      if (err?.response?.status === 404) {
+        throw new BadRequestException('Club or user not found');
+      }
+      throw new ServiceUnavailableException('Failed to fetch role from clubs');
     }
   }
 }

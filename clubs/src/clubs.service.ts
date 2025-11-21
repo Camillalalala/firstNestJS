@@ -48,6 +48,11 @@ export class ClubsService {
   }
 
   private readonly eventsServiceBase = 'http://localhost:3002';
+  private readonly roles: Record<number, Record<number, string>> = {
+    // clubId -> userId -> role
+    1: { 1: 'officer', 2: 'member' },
+    2: { 2: 'officer' },
+  };
 
   async createEventForClub(clubId: number, payload: { title: string },): Promise<{ id: number; clubId: number; title: string }> {
     const clubExists = this.clubs.some((c) => c.id === clubId);
@@ -68,5 +73,14 @@ export class ClubsService {
       clubId: response.data.clubId,
       title: response.data.title,
     };
+  }
+
+  getUserRole(clubId: number, userId: number): { clubId: number; userId: number; role: string } {
+    const clubExists = this.clubs.some((c) => c.id === clubId);
+    if (!clubExists) {
+      throw new NotFoundException(`Club with id "${clubId}" does not exist`);
+    }
+    const role = this.roles[clubId]?.[userId] || 'none';
+    return { clubId, userId, role };
   }
 }
