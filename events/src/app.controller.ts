@@ -28,7 +28,7 @@ export class AppController {
   }
 
   @Post()
-  async createEvent(@Body() body: { clubId: number; title: string }) {
+  createEvent(@Body() body: { clubId: number; title: string }) {
     return this.appService.createEvent({ clubId: body.clubId, title: body.title });
   }
 }
