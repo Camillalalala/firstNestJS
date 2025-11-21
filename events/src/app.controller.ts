@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Put } from '@nestjs/common';
+import { Controller, Get, Param, Put, Delete } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller('events')
@@ -19,5 +19,10 @@ export class AppController {
   @Put('/notifyEventUpdate')
   async callEventDetailsNotif(@Param('eventId') eventId: string) {
     return this.appService.callEventDetailsNotif(eventId);
+  }
+
+  @Delete(':eventId')
+  async deleteEvent(@Param('eventId') eventId: string) {
+    return this.appService.deleteEvent(eventId);
   }
 }

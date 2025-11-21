@@ -12,6 +12,7 @@ export class AppService {
   }
 
   private readonly notificationsBaseUrl = 'http://localhost:3004';
+  private readonly clubsBaseUrl = 'http://localhost:3001';
 
   getEmailTemplate(key: string): EmailTemplate {
     const tpl = EMAIL_TEMPLATES[key];
@@ -27,5 +28,19 @@ export class AppService {
     return {
       message: `Notifies when ${eventId} details has been modified: ${data}`,
     };
+  }
+
+  async deleteEvent(eventId: string): Promise<{
+    eventDeleted: boolean;
+    clubsUpdated: boolean;
+    eventId: string;
+  }> {
+    // Simulate internal deletion (no persistence layer yet)
+    const eventDeleted = true;
+    let clubsUpdated = false;
+    const url = `${this.clubsBaseUrl}/clubs/event-reference/${eventId}`;
+    await axios.delete(url);
+    clubsUpdated = true;
+    return { eventDeleted, clubsUpdated, eventId };
   }
 }

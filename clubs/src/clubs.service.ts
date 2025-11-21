@@ -36,4 +36,12 @@ export class ClubsService {
     this.clubs[index] = updated;
     return await Promise.resolve(updated);
   }
+
+  async removeEventReference(
+    eventId: number,
+  ): Promise<{ removed: boolean; eventId: number }> {
+    // In a real implementation you would locate clubs referencing this event and remove the event from event list associated with club.
+    // Here we just simulate success.
+    return await Promise.resolve({ removed: true, eventId });
+  }
 }
